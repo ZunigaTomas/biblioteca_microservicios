@@ -9,7 +9,7 @@ import java.util.Date;
 
 @Entity @Getter @Setter @ToString @AllArgsConstructor @NoArgsConstructor
 @Table(name = "loans")
-public class Loan extends BaseEntity{
+public class Loans extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
