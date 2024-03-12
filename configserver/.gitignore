@@ -56,8 +56,6 @@ mvnw.cmd
 .gradle/
 
 # Spring Boot application properties
-application.properties
-application.yml
 config
 ./src/main/resources/config
 # Dependency lock files
