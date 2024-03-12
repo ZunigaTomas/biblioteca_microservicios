@@ -5,7 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.time.Duration;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity @Getter @Setter @ToString @AllArgsConstructor @NoArgsConstructor
 @Table(name = "loans")
@@ -22,13 +22,22 @@ public class Loans extends BaseEntity{
     @Column(name = "book_id", nullable = false)
     private Long bookId;
 
+    @Column(name = "loan_number", nullable = false)
+    private Long loanNumber;
+
     @Column(name = "loan_date", nullable = false)
-    private Date loanDate;
+    private LocalDateTime loanDate;
 
     @Column(name = "return_date")
-    private Date returnDate;
+    private LocalDateTime returnDate;
 
     @Transient
     private Duration loanDuration;
 
+    @PostLoad
+    private void calculateLoanDuration() {
+        if (returnDate != null) {
+            loanDuration = Duration.between(loanDate, returnDate);
+        }
+    }
 }

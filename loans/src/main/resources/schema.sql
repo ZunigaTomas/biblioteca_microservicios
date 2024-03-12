@@ -4,6 +4,7 @@ CREATE TABLE IF NOT EXISTS `loans` (
                        `id` BIGINT AUTO_INCREMENT PRIMARY KEY,
                        `user_id` BIGINT NOT NULL,
                        `book_id` BIGINT NOT NULL,
+                       `loan_number` BIGINT NOT NULL,
                        `loan_date` TIMESTAMP NOT NULL,
                        `return_date` TIMESTAMP,
                        CONSTRAINT `fk_user_id` FOREIGN KEY (user_id) REFERENCES users(id),
