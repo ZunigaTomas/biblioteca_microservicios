@@ -8,7 +8,6 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 
 @Entity @Getter @Setter @ToString @AllArgsConstructor @NoArgsConstructor
-@Table(name = "loans")
 public class Loans extends BaseEntity{
 
     @Id

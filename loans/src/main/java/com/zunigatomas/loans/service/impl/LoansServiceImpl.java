@@ -7,6 +7,7 @@ import com.zunigatomas.loans.exception.ResourceNotFoundException;
 import com.zunigatomas.loans.mapper.LoansMapper;
 import com.zunigatomas.loans.repository.LoansRepository;
 import com.zunigatomas.loans.service.ILoansService;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -15,7 +16,9 @@ import java.util.Optional;
 import java.util.Random;
 
 @Service
+@AllArgsConstructor
 public class LoansServiceImpl implements ILoansService {
+    private final Random random = new Random();
     private LoansRepository loansRepository;
     /**
      * @param userId - Loaning user ID
@@ -23,6 +26,7 @@ public class LoansServiceImpl implements ILoansService {
      */
     @Override
     public void createLoan(Long userId, Long bookId) {
+        //acá van a ir las llamadas con feign clients para verificar la existencia de los libros y usuarios
         Optional<Loans> optionalLoans = loansRepository.findByUserIdAndBookId(userId, bookId);
         if(optionalLoans.isPresent()) {
             throw new LoanAlreadyExistsException("User with id " + userId + " has already a loan registered for book with id " + bookId + ".");
@@ -34,9 +38,8 @@ public class LoansServiceImpl implements ILoansService {
         LocalDateTime loanDate = LocalDateTime.now();
         LocalDateTime returnDate = loanDate.plusDays(10);
         Loans newLoan = new Loans();
-        Random random = new Random();
-        int randomVal = random.nextInt(900000000);
-        long randomLoanNumber = 100000000000L + randomVal;
+        int randomVal = random.nextInt(9000000);
+        long randomLoanNumber = 10000000L + randomVal;
         newLoan.setLoanNumber(randomLoanNumber);
         newLoan.setUserId(userId);
         newLoan.setBookId(bookId);
@@ -51,9 +54,9 @@ public class LoansServiceImpl implements ILoansService {
      * @return loans details given a certain loan number
      */
     @Override
-    public LoansDto fetchLoan(Long loanNumber) {
-        Loans loans = loansRepository.findByLoanNumber(loanNumber).orElseThrow(
-                () -> new ResourceNotFoundException("Loan", "loanNumber", String.valueOf(loanNumber))
+    public LoansDto fetchLoan(Long bookId) {
+        Loans loans = loansRepository.findByBookId(bookId).orElseThrow(
+                () -> new ResourceNotFoundException("Loan", "bookId", String.valueOf(bookId))
         );
         return LoansMapper.mapToLoansDto(loans, new LoansDto());
     }
@@ -89,9 +92,9 @@ public class LoansServiceImpl implements ILoansService {
      * @return boolean indicating if deletion was successful or not
      */
     @Override
-    public boolean deleteLoan(Long id) {
-        Loans loans = loansRepository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("Loan", "Id", String.valueOf(id))
+    public boolean deleteLoan(Long bookId) {
+        Loans loans = loansRepository.findById(bookId).orElseThrow(
+                () -> new ResourceNotFoundException("Loan", "bookId", String.valueOf(bookId))
         );
         loansRepository.deleteByLoanNumber(loans.getLoanNumber());
         return false;

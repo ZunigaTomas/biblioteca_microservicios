@@ -15,10 +15,10 @@ public interface ILoansService {
 
     /**
      *
-     * @param loanNumber - Loan registration number
+     * @param bookId - Book id
      * @return loans details given a certain loan number
      */
-    LoansDto fetchLoan(Long loanNumber);
+    LoansDto fetchLoan(Long bookId);
 
     /**
      *
