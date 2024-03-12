@@ -1,0 +1,45 @@
+server:
+  port: 8071
+spring:
+  application:
+    name: "configserver"
+  profiles:
+    #active: native
+    active: git
+  cloud:
+    compatibility-verifier:
+      enabled: false
+    config:
+      server:
+        #native:
+          #search-locations: "classpath:/config"
+          #search-locations: "file:///C://Users//tomas//Desktop//Microservicios//v3-springboot//configuraciones//config"
+        git:
+          uri: "https://github.com/ZunigaTomas/biblioteca-config.git"
+          default-label: main
+          timeout: 5
+          clone-on-start: true
+          force-pull: true
+  rabbitmq:
+    host: "localhost"
+    port: 5672
+    username: "guest"
+    password: "guest"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  health:
+    readiness-state:
+      enabled: true
+    liveness-state:
+      enabled: true
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
+encrypt:
+  key: "QUlb7RUVFGRVQj7MaKVcP0CSwSaXBHFT"
